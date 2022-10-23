@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, memo } from "react"
+import "./App.css"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function Swatch({ color }) {
+  console.log(`Swatch rendered ${color}`)
+  return <div style={{ width: 75, height: 75, background: color }}></div>
 }
 
-export default App;
+const MemoedSwatch = memo(Swatch)
+
+function App() {
+  const [appRenderedIndex, setAppRenderedIndex] = useState(0)
+  const [color, setColor] = useState("red")
+
+  console.log(`App rendered ${appRenderedIndex}`)
+
+  return (
+    <div className="App">
+      <div>
+        <button onClick={() => setAppRenderedIndex(appRenderedIndex + 1)}>
+          Re-render App
+        </button>
+        <button onClick={() => setColor(color === "red" ? "blue" : "red")}>
+          Change Color
+        </button>
+      </div>
+      <div>
+        <MemoedSwatch color={color} />
+      </div>
+    </div>
+  )
+}
+
+export default App
